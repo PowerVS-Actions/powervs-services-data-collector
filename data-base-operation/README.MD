@@ -1,0 +1,1 @@
+docker build -t powervs-services-db-insert:latest .
