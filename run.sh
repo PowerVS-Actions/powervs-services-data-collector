@@ -78,9 +78,7 @@ function run (){
         IBMCLOUD=$(echo "$i" | awk -F "," '{print $1}')
         IBMCLOUD_ID=$(echo "$IBMCLOUD" | awk -F ":" '{print $1}')
         IBMCLOUD_NAME=$(echo "$IBMCLOUD" | awk -F ":" '{print $2}')
-        if [[ -d "$(pwd)/all-vms/$IBMCLOUD_ID/" ]]; then
-		    cat "$(pwd)/all-vms/$IBMCLOUD_ID/${IBMCLOUD_ID}_vms.csv" >> "$(pwd)/all-vms/all_vms.csv"
-		fi
+	cat "$(pwd)/$WORKSPACE/$IBMCLOUD_ID/${IBMCLOUD_ID}-services" >> "$(pwd)/$WORKSPACE/all_services.csv"
     done
 
     rm -f $(pwd)/data-collector/.containers_id
