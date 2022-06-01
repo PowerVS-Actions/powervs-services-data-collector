@@ -70,8 +70,13 @@ function get_crns(){
         POWERVS_ID=$(echo "$line" | awk -F ':' '{print $8}')
         local IBMCLOUD_ID="$1"
         local IBMCLOUD_NAME="$2"
-        echo "$IBMCLOUD_ID,$IBMCLOUD_NAME,$POWERVS_ID,$POWERVS_NAME,$POWERVS_ZONE,$CRN" >> \
+
+	PVS_CREATOR=$(ibmcloud resource service-instance "$POWERVS_NAME" --output json | jq -r '.[] | "\(.created_by)"')
+        PVS_CREATOR_MAIL=$(ibmcloud account users --output json | jq -r '.[] | "\(.ibmUniqueId),\(.email)"' | grep "$PVS_CREATOR" | awk -F ',' '{print $2}')
+
+        echo "$IBMCLOUD_ID,$IBMCLOUD_NAME,$POWERVS_ID,$POWERVS_NAME,$POWERVS_ZONE,$CRN,$PVS_CREATOR_MAIL" >> \
         "$(pwd)/$IBMCLOUD_ID/$IBMCLOUD_ID-services"
+
 	done < "$(pwd)/$IBMCLOUD_ID/crns-$TODAY-$IBMCLOUD_ID"
 }
 
