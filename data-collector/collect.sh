@@ -70,14 +70,15 @@ function get_crns(){
         POWERVS_ID=$(echo "$line" | awk -F ':' '{print $8}')
         local IBMCLOUD_ID="$1"
         local IBMCLOUD_NAME="$2"
-
+	
+	PVS_DATE_CREATION=$(ibmcloud resource service-instance "$POWERVS_NAME" --output json | jq -r '.[].created_at')
 	PVS_CREATOR=$(ibmcloud resource service-instance "$POWERVS_NAME" --output json | jq -r '.[] | "\(.created_by)"')
         PVS_CREATOR_MAIL=$(ibmcloud account users --output json | jq -r '.[] | "\(.ibmUniqueId),\(.email)"' | grep "$PVS_CREATOR" | awk -F ',' '{print $2}')
 
 	ibmcloud pi st "$CRN"
 	TOTAL_VMS=$(ibmcloud pi ins --json | jq -r '.Payload.pvmInstances[].pvmInstanceID' | wc -l | tr -d ' ')
 
-        echo "$IBMCLOUD_ID,$IBMCLOUD_NAME,$POWERVS_ID,$POWERVS_NAME,$POWERVS_ZONE,$CRN,$PVS_CREATOR_MAIL,$TOTAL_VMS" >> \
+        echo "$IBMCLOUD_ID,$IBMCLOUD_NAME,$POWERVS_ID,$POWERVS_NAME,$POWERVS_ZONE,$CRN,$PVS_CREATOR_MAIL,$TOTAL_VMS,$PVS_DATE_CREATION" >> \
         "$(pwd)/$IBMCLOUD_ID/$IBMCLOUD_ID-services"
 
 	done < "$(pwd)/$IBMCLOUD_ID/crns-$TODAY-$IBMCLOUD_ID"
