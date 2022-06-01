@@ -55,7 +55,7 @@ function get_crns(){
     local IBMCLOUD_ID="$1"
 
 	rm -f "$(pwd)/$IBMCLOUD_ID/crns-$TODAY-$IBMCLOUD_ID"
-    rm -f "$(pwd)/$IBMCLOUD_ID/pvs-services-$TODAY-$IBMCLOUD_ID"
+        rm -f "$(pwd)/$IBMCLOUD_ID/pvs-services-$TODAY-$IBMCLOUD_ID"
 
 	ibmcloud pi service-list --json | jq -r '.[] | "\(.CRN),\(.Name)"' >> "$(pwd)/$IBMCLOUD_ID/crns-$TODAY-$IBMCLOUD_ID"
 
