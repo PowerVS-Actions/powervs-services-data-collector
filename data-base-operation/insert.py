@@ -114,19 +114,19 @@ def copy_data(table,csv_file):
 if __name__ == '__main__':
 
     if len(sys.argv) > 1:
-        all_vms_csv_file=sys.argv[1]
+        all_services_csv_file=sys.argv[1]
     else:
         print ("ERROR: the csv file with all VMs was not set as parameter.")
         print ("       python3 ./insert.py all_services.csv")
         exit(1)
-    if os.path.exists(all_vms_csv_file):
-        today = datetime.today().strftime('%Y%m%d')
+    if os.path.exists(all_services_csv_file):        
+        today = datetime.today().strftime('%Y%m%d_%H%M%S')
         new_table = "all_powervs_services_" + today
-        drop_view("pvsdata_all_services")
-        delete_table(new_table)
         create_table("powervs_services_base_table",new_table)
-        copy_data(new_table,all_vms_csv_file)
+        copy_data(new_table,all_services_csv_file)
+        drop_view("pvsdata_all_services")
         create_view("pvsdata_all_services",new_table)
+        
     else:
         print ("ERROR: could not locate the required .csv file")
         exit(1)
