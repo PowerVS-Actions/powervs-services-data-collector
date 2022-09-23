@@ -7,6 +7,7 @@ WORKDIR /output
 ENV API_KEY=""
 ENV IBMCLOUD_ID=""
 ENV IBMCLOUD_NAME=""
+ENV LANG=en_US.UTF-8
 
 COPY collect.sh /collect.sh
 
